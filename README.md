@@ -1,3 +1,5 @@
+![CI](https://github.com/nonodu13009/allianzsaas/actions/workflows/ci.yml/badge.svg)
+
 ## Allianz Saas — Frontend (Next.js + App Router)
 
 ### Installation
