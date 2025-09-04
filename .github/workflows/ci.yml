@@ -25,6 +25,12 @@ jobs:
       - name: Lint
         run: npm run lint --if-present
 
+      - name: Typecheck
+        run: npm run typecheck --if-present
+
+      - name: Prettier check
+        run: npm run format:check --if-present
+
       - name: Build
         run: npm run build --if-present
 

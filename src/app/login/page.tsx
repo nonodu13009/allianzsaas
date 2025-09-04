@@ -95,11 +95,11 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 btn btn-ghost text-xs px-2 py-1"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md px-2 py-1 text-xs bg-white/60 backdrop-blur border border-black/10"
                 aria-pressed={showPassword}
                 aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
               >
-                {showPassword ? "Masquer" : "Afficher"}
+                {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
           </div>
