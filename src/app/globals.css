@@ -40,8 +40,8 @@ h3 { font-weight: 600; }
 /* Design System - Components */
 .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border-radius:9999px; padding:.5rem 1rem; font-weight:500; transition:all .2s ease; }
 .btn:disabled { opacity:.5; cursor:not-allowed; }
-.btn-primary { background:#000; color:#fff; }
-.btn-primary:hover { background:#222; }
+.btn-primary { background:var(--brand); color:#fff; border:1px solid rgb(255 255 255 / .18); box-shadow:0 8px 24px rgba(20,56,97,.28); }
+.btn-primary:hover { background:#1d4b7a; }
 .btn-ghost { border:1px solid rgb(0 0 0 / .12); }
 .btn-ghost:hover { background:rgb(0 0 0 / .05); }
 
@@ -54,5 +54,5 @@ h3 { font-weight: 600; }
 
 /* Utilities */
 .hero { position:relative; overflow:hidden; border-radius:1.5rem; padding:2rem; color:#fff; box-shadow:0 10px 30px rgba(0,0,0,.10); background:linear-gradient(135deg, #38bdf8e6, #6366f1e6 60%, #8b5cf6e6); }
-.hero::before { content:""; position:absolute; inset:0; opacity:.25; background:radial-gradient(600px 200px at 10% -20%, #fff, transparent), radial-gradient(400px 160px at 90% -10%, #fff, transparent); }
+.hero::before { content:""; position:absolute; inset:0; opacity:.25; background:radial-gradient(600px 200px at 10% -20%, #fff, transparent), radial-gradient(400px 160px at 90% -10%, #fff, transparent); pointer-events:none; }
 .section-title { font-size:clamp(22px,3vw,28px); font-weight:600; letter-spacing:-.01em; }
