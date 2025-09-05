@@ -25,8 +25,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = useMemo(() => {
     const items = [{ href: "/dashboard", label: "Accueil" }];
-    if (role && role.toLowerCase().includes("cdc_commercial")) {
+    const normalized = role
+      ? role
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+      : "";
+    if (normalized.includes("cdc_commercial")) {
       items.push({ href: "/dashboard/cdc-commercial", label: "Activité commerciale" });
+    }
+    if (normalized.includes("cdc_sante_ind")) {
+      items.push({ href: "/dashboard/cdc-sante-ind", label: "Santé individuelle" });
     }
     return items;
   }, [role]);
