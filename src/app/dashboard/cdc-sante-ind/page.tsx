@@ -131,7 +131,7 @@ function LockSvg({ open }: { open: boolean }) {
 export default function CdcSanteIndPage() {
   const router = useRouter();
 
-  // Auth guard for role `CDC_sante_ind`
+  // Auth guard for role `CDC_sante_ind` (admin also allowed)
   useEffect(() => {
     const session = getCurrentSession();
     if (!session) {
@@ -142,7 +142,8 @@ export default function CdcSanteIndPage() {
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
-    if (!normalized.includes("cdc_sante_ind")) {
+    const isAdmin = normalized.includes("administrateur");
+    if (!normalized.includes("cdc_sante_ind") && !isAdmin) {
       router.replace("/dashboard");
     }
   }, [router]);

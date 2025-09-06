@@ -83,7 +83,8 @@ export default function CdcSanteCollPage() {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/\s+/g, "_");
-    if (!normalized.includes("cdc_sante_coll")) router.replace("/dashboard");
+    const isAdmin = normalized.includes("administrateur");
+    if (!normalized.includes("cdc_sante_coll") && !isAdmin) router.replace("/dashboard");
   }, [router]);
 
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(() => new Date());

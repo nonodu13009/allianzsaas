@@ -194,8 +194,12 @@ export default function CdcCommercialPage() {
       return;
     }
     setSessionEmail(session.email);
-    const role = session.role.toLowerCase();
-    if (!role.includes("cdc_commercial")) {
+    const norm = session.role
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+    const isAdmin = norm.includes("administrateur");
+    if (!norm.includes("cdc_commercial") && !isAdmin) {
       router.replace("/dashboard");
     }
   }, [router]);
