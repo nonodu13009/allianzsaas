@@ -7,6 +7,12 @@ import { useEffect, useMemo, useState } from "react";
 export default function DashboardPage() {
   const [welcome, setWelcome] = useState<string>("");
   const [today] = useState<Date>(() => new Date());
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  function toMonthKey(d: Date): string {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  }
+  const monthKey = useMemo(() => toMonthKey(today), [today]);
 
   const monthStart = useMemo(() => new Date(today.getFullYear(), today.getMonth(), 1), [today]);
   const monthEnd = useMemo(() => new Date(today.getFullYear(), today.getMonth() + 1, 0), [today]);
@@ -29,8 +35,15 @@ export default function DashboardPage() {
     if (session) {
       const roleLabel = getRoleDisplayName(session.role);
       setWelcome(`Bienvenue, ${session.firstName} ${session.lastName} — ${roleLabel}`);
+      const normalized = session.role
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      setIsAdmin(normalized.includes("administrateur"));
     }
   }, []);
+
+  // (suppression de la synthèse admin sur l'accueil)
 
   return (
     <div>
@@ -87,6 +100,7 @@ export default function DashboardPage() {
           <h2 className="section-title mb-1">État</h2>
           <p className="subtle text-sm">Zone commune à tous les rôles.</p>
         </div>
+        
       </section>
     </div>
   );

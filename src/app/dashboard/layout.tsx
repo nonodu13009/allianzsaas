@@ -70,6 +70,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           .normalize("NFD")
           .replace(/[\u0300-\u036f]/g, "")
       : "";
+    if (normalized.includes("administrateur")) {
+      items.push({ href: "/dashboard/synthese", label: "Synthèse commerciale" });
+    }
     if (normalized.includes("cdc_commercial")) {
       items.push({ href: "/dashboard/cdc-commercial", label: "Mon activité" });
     }

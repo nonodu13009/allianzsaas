@@ -33,6 +33,7 @@ type BaseEntry = {
   createdAtIso: string;
   // YYYY-MM-DD the entry belongs to (drives month grouping)
   dayIso: string; // equals date de saisie (auto)
+  authorEmail: string;
 };
 
 type AnEntry = BaseEntry & {
@@ -183,6 +184,7 @@ function LockSvg({ open }: { open: boolean }) {
 
 export default function CdcCommercialPage() {
   const router = useRouter();
+  const [sessionEmail, setSessionEmail] = useState<string | null>(null);
 
   // Auth guard
   useEffect(() => {
@@ -191,6 +193,7 @@ export default function CdcCommercialPage() {
       router.replace("/login");
       return;
     }
+    setSessionEmail(session.email);
     const role = session.role.toLowerCase();
     if (!role.includes("cdc_commercial")) {
       router.replace("/dashboard");
@@ -355,6 +358,7 @@ export default function CdcCommercialPage() {
       clientName: ensureFirstWordCapitalized(anForm.clientName),
       createdAtIso: today.toISOString(),
       dayIso: toDayIso(today), // date de saisie auto
+      authorEmail: sessionEmail || "unknown",
       product: anForm.product,
       contractNumber: anForm.contractNumber || undefined,
       effectiveDateIso: anForm.effectiveDateIso, // date d'effet choisie
@@ -380,6 +384,7 @@ export default function CdcCommercialPage() {
       clientName: ensureFirstWordCapitalized(processClientName),
       createdAtIso: today.toISOString(),
       dayIso: toDayIso(today), // date de saisie auto
+      authorEmail: sessionEmail || "unknown",
       process: pendingProcessKind,
     };
     upsertEntry(entry);

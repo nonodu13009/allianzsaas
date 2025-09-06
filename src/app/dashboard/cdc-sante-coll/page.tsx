@@ -25,6 +25,7 @@ type Entry = {
   id: string;
   dayIso: string; // YYYY-MM-DD (saisie auto)
   createdAtIso: string; // ISO
+  authorEmail?: string;
   nature: NatureActe;
   origine: Origine;
   compagnie: Compagnie;
@@ -154,6 +155,8 @@ export default function CdcSanteCollPage() {
   const submit = () => {
     const today = new Date();
     const primePonderee = computePonderee(form.primeBrute || 0, form.origine);
+    const session = getCurrentSession();
+    const authorEmail = session?.email || "unknown";
     if (editingId) {
       setEntries(prev => prev.map(e => e.id === editingId ? { ...e, nature: form.nature, origine: form.origine, compagnie: form.compagnie, client: normalizeClientName(form.client), contractNumber: form.contract?.trim() || undefined, primeBrute: Math.round(form.primeBrute || 0), primePonderee } : e));
     } else {
@@ -161,6 +164,7 @@ export default function CdcSanteCollPage() {
         id: Math.random().toString(36).slice(2, 10),
         dayIso: toDayIso(today),
         createdAtIso: today.toISOString(),
+        authorEmail,
         nature: form.nature,
         origine: form.origine,
         compagnie: form.compagnie,

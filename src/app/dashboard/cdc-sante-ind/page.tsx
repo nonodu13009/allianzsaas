@@ -28,6 +28,7 @@ type SanteEntry = {
   createdAtIso: string; // horodatage de saisie
   dayIso: string; // jour d'appartenance
   company?: "Allianz" | "Courtage"; // seulement pour "Affaire nouvelle"
+  authorEmail?: string;
 };
 
 const ACTS: ActKind[] = [
@@ -193,6 +194,7 @@ export default function CdcSanteIndPage() {
     if (!pendingAct || isMonthLocked) return;
     const today = new Date();
     const ca = Math.max(0, Math.floor(Number(form.caEur)) || 0);
+    const current = getCurrentSession();
     const entry: SanteEntry = {
       id: editingId ?? generateId(),
       act: pendingAct,
@@ -204,6 +206,7 @@ export default function CdcSanteIndPage() {
       createdAtIso: today.toISOString(),
       dayIso: toDayIso(today),
       company: pendingAct === "Affaire nouvelle" ? form.company : undefined,
+      authorEmail: current?.email || "unknown",
     };
     setEntries((prev) => {
       if (!editingId) return [entry, ...prev];
