@@ -39,7 +39,7 @@ export default function LoginPage() {
         alt="Fond de connexion"
         fill
         priority
-        className="object-cover blur-sm"
+        className="object-cover blur-[1px]"
       />
       <div className="absolute inset-0 bg-black/40" />
 
@@ -106,7 +106,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isBlocked}
-            className="btn btn-primary w-full"
+            className="btn btn-vivid btn-lg w-full"
           >
             Se connecter
           </button>

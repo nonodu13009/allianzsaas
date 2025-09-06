@@ -8,7 +8,7 @@ export default function Home() {
         alt="Corniche Kennedy à Marseille"
         fill
         priority
-        className="object-cover blur-sm"
+        className="object-cover blur-[1px]"
       />
       <div className="absolute inset-0 bg-black/40" />
 
@@ -22,7 +22,7 @@ export default function Home() {
           </p>
           <a
             href="/login"
-            className="mt-8 inline-block btn btn-primary"
+            className="mt-8 inline-block btn btn-vivid btn-xxl"
           >
             Se connecter
           </a>

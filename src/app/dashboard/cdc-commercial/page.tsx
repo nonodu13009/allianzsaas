@@ -5,6 +5,9 @@ import { getCdcConfig } from "@/config/cdc";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DocumentPlusIcon, Cog6ToothIcon, ClockIcon, ShieldCheckIcon, ArrowPathIcon, PencilIcon, TrashIcon, ChartBarIcon, CurrencyEuroIcon, BoltIcon, AdjustmentsVerticalIcon, InformationCircleIcon, BellAlertIcon, FlagIcon, RocketLaunchIcon, ArrowsUpDownIcon } from "@heroicons/react/24/outline";
+import AppModal from "@/app/components/AppModal";
+import { kpiHelp } from "@/app/content/kpiHelp";
+import KpiCard from "@/app/components/KpiCard";
 
 // Types — kept local for the UI skeleton. Can be moved to shared types later.
 type AnProduct =
@@ -497,23 +500,7 @@ export default function CdcCommercialPage() {
     };
   }, [entries, monthKey, currentMonthDate, totalDaysInMonth]);
 
-  const KpiCard: React.FC<{ title: string; value: string | number; sub?: string; gradient: string; Icon: React.ComponentType<any>; onInfo: () => void }> = ({ title, value, sub, gradient, Icon, onInfo }) => (
-    <div className={`rounded-2xl p-3 border border-white/20 dark:border-white/15 bg-white/10 dark:bg-black/20 backdrop-blur-md shadow-sm`}
-      style={{ position: "relative" }}>
-      <div className={`absolute inset-0 rounded-2xl ${gradient} opacity-25 -z-10`} />
-      <div className="flex items-center gap-2">
-        <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white ${gradient}`}>
-          <Icon className="w-5 h-5" />
-        </div>
-        <div className="text-[11px] subtle">{title}</div>
-        <button className="ml-auto btn btn-ghost p-1 rounded-full bg-white/30 dark:bg-white/10" title="À propos de ce KPI" onClick={onInfo}>
-          <InformationCircleIcon className="w-4 h-4" />
-        </button>
-      </div>
-      <div className="mt-2 text-3xl font-semibold text-center leading-none tracking-tight">{value}</div>
-      {sub && <div className="text-[11px] subtle mt-1 text-center">{sub}</div>}
-    </div>
-  );
+  // Replaced by shared component
 
   
 
@@ -528,18 +515,18 @@ export default function CdcCommercialPage() {
           </div>
           <div className="flex items-center gap-2">
             <button className="btn btn-ghost" onClick={goPrevMonth} title="Mois précédent">◀</button>
-            <span className="badge" title={monthKey}>{currentMonthDate.toLocaleDateString(undefined, { month: "long", year: "numeric" })}</span>
+            <span className="badge badge-strong" title={monthKey}>{currentMonthDate.toLocaleDateString(undefined, { month: "long", year: "numeric" })}</span>
             <button className="btn btn-ghost" onClick={goNextMonth} title="Mois suivant">▶</button>
           </div>
         </div>
 
         {/* KPIs sous le mois */}
         <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
-          <KpiCard title="Affaires nouvelles" value={kpis.countAn} gradient="bg-gradient-to-r from-pink-500 to-fuchsia-500" Icon={DocumentPlusIcon} onInfo={() => setKpiInfo({ open: true, title: "Affaires nouvelles", body: "Total des AN créées sur le mois affiché, tous produits confondus." })} />
+          <KpiCard title="Affaires nouvelles" value={kpis.countAn} gradient="bg-gradient-to-r from-pink-500 to-fuchsia-500" Icon={DocumentPlusIcon} onInfo={() => setKpiInfo({ open: true, title: "Affaires nouvelles", body: kpiHelp.actes })} />
           <KpiCard title="AUTO/MOTO" value={kpis.countAuto} gradient="bg-gradient-to-r from-sky-500 to-cyan-400" Icon={ChartBarIcon} onInfo={() => setKpiInfo({ open: true, title: "AUTO/MOTO", body: "Nombre d’AN de type AUTO/MOTO pour le mois." })} />
           <KpiCard title="Autres AN" value={kpis.countOthers} gradient="bg-gradient-to-r from-violet-500 to-purple-500" Icon={ChartBarIcon} onInfo={() => setKpiInfo({ open: true, title: "Autres AN", body: "Nombre d’AN dont le type est différent de AUTO/MOTO." })} />
           <KpiCard title="Process (total)" value={kpis.countProcessTotal} sub={`M+3 ${kpis.countM3} • Auto ${kpis.countPretAuto} • IRD ${kpis.countPretIrd}`} gradient="bg-gradient-to-r from-emerald-500 to-teal-500" Icon={BoltIcon} onInfo={() => setKpiInfo({ open: true, title: "Process (total)", body: "Nombre total de saisies Process (M+3, Préterme Auto, Préterme IRD) sur le mois, avec détail par type." })} />
-          <KpiCard title="CA cumulé" value={kpis.caLabel} gradient="bg-gradient-to-r from-amber-500 to-orange-500" Icon={CurrencyEuroIcon} onInfo={() => setKpiInfo({ open: true, title: "CA cumulé", body: "Somme des montants des AN du mois: Prime annuelle (hors PU/VL) + Versement libre (PU/VL). Montants en euros entiers." })} />
+          <KpiCard title="CA cumulé" value={kpis.caLabel} gradient="bg-gradient-to-r from-amber-500 to-orange-500" Icon={CurrencyEuroIcon} onInfo={() => setKpiInfo({ open: true, title: "CA cumulé", body: kpiHelp.caBrut })} />
           <KpiCard title="Ratio" value={kpis.ratioLabel} gradient="bg-gradient-to-r from-indigo-500 to-blue-500" Icon={AdjustmentsVerticalIcon} onInfo={() => setKpiInfo({ open: true, title: "Ratio", body: "(Autres AN) / (AUTO/MOTO) en %. Si AUTO/MOTO = 0, ratio fixé à 100%." })} />
           <KpiCard title="Com. potentielles" value={kpis.commissionsPotLabel} gradient="bg-gradient-to-r from-rose-500 to-red-500" Icon={CurrencyEuroIcon} onInfo={() => setKpiInfo({ open: true, title: "Commissions potentielles", body: "Somme des commissions calculées selon le barème par type d’AN (entiers en €)." })} />
           <KpiCard title="Com. réelles" value={kpis.commissionsRealLabel} gradient="bg-gradient-to-r from-lime-500 to-emerald-500" Icon={CurrencyEuroIcon} onInfo={() => setKpiInfo({ open: true, title: "Commissions réelles", body: "Égales aux commissions potentielles si et seulement si: potentielles ≥ 200 €, process ≥ 15 et ratio ≥ 100 %. Sinon: 0 €." })} />
@@ -572,20 +559,9 @@ export default function CdcCommercialPage() {
 
         {/* (déplacé) boutons de saisie → désormais au-dessus du tableau */}
 
-        {kpiInfo.open && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="card w-full max-w-md bg-white/90 dark:bg-black/60">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="section-title">{kpiInfo.title}</h3>
-                <button className="btn btn-ghost" onClick={() => setKpiInfo({ open: false, title: "", body: "" })}>Fermer</button>
-              </div>
-              <p className="text-sm">{kpiInfo.body}</p>
-              <div className="mt-4 flex justify-end">
-                <button className="btn btn-primary" onClick={() => setKpiInfo({ open: false, title: "", body: "" })}>OK</button>
-              </div>
-            </div>
-          </div>
-        )}
+        <AppModal open={kpiInfo.open} title={kpiInfo.title} onClose={() => setKpiInfo({ open: false, title: "", body: "" })}>
+          <p>{kpiInfo.body}</p>
+        </AppModal>
 
         {/* 3) Timeline + système de filtres colorés */}
         <div className="mt-4 space-y-3">
@@ -656,21 +632,21 @@ export default function CdcCommercialPage() {
                 const baseColor =
                   dow === 0
                     ? count === 0
-                      ? "bg-red-300 text-white"
+                      ? "bg-red-500 text-white"
                       : count < 3
-                      ? "bg-red-400 text-white"
-                      : "bg-red-600 text-white"
+                      ? "bg-red-600 text-white"
+                      : "bg-red-700 text-white"
                     : dow === 6
                     ? count === 0
-                      ? "bg-orange-300 text-white"
+                      ? "bg-orange-500 text-white"
                       : count < 3
-                      ? "bg-orange-400 text-white"
-                      : "bg-orange-600 text-white"
+                      ? "bg-orange-600 text-white"
+                      : "bg-orange-700 text-white"
                     : count === 0
-                    ? "bg-white/90 text-black/60"
+                    ? "bg-emerald-200 text-emerald-900"
                     : count < 3
-                    ? "bg-sky-300 text-white"
-                    : "bg-sky-500 text-white";
+                    ? "bg-emerald-500 text-white"
+                    : "bg-emerald-600 text-white";
                 return (
                   <div key={dIso} className="relative flex flex-col items-center">
                     <button
@@ -828,10 +804,10 @@ export default function CdcCommercialPage() {
 
       {/* AN Modal */}
       {showAnModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="card w-full max-w-xl bg-white/90 dark:bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55">
+          <div className="modal-card w-full max-w-xl">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="section-title">Affaire nouvelle</h3>
+              <h3 className="modal-title">Affaire nouvelle</h3>
               <button className="btn btn-ghost" onClick={() => setShowAnModal(false)}>Fermer</button>
             </div>
 
@@ -899,7 +875,7 @@ export default function CdcCommercialPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex justify-end gap-2">
+            <div className="modal-actions">
               <button className="btn btn-ghost" onClick={() => setShowAnModal(false)}>Annuler</button>
               <button className="btn btn-primary" disabled={!canSubmitAn || isMonthLocked} onClick={submitAn}>Enregistrer</button>
             </div>
@@ -909,10 +885,10 @@ export default function CdcCommercialPage() {
 
       {/* Process Modal */}
       {pendingProcessKind && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="card w-full max-w-md bg-white/90 dark:bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55">
+          <div className="modal-card w-full max-w-md">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="section-title">{pendingProcessKind}</h3>
+              <h3 className="modal-title">{pendingProcessKind}</h3>
               <button className="btn btn-ghost" onClick={() => setPendingProcessKind(null)}>Fermer</button>
             </div>
 
@@ -925,7 +901,7 @@ export default function CdcCommercialPage() {
               </label>
             </div>
 
-            <div className="mt-4 flex justify-end gap-2">
+            <div className="modal-actions">
               <button className="btn btn-ghost" onClick={() => setPendingProcessKind(null)}>Annuler</button>
               <button className="btn btn-primary" disabled={!processClientName.trim() || isMonthLocked} onClick={submitProcess}>Enregistrer</button>
             </div>
