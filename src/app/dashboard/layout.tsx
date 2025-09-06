@@ -72,6 +72,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       : "";
     if (normalized.includes("administrateur")) {
       items.push({ href: "/dashboard/synthese", label: "Synthèse commerciale" });
+      items.push({ href: "/dashboard/commissions-agence", label: "Commissions agence" });
     }
     if (normalized.includes("cdc_commercial")) {
       items.push({ href: "/dashboard/cdc-commercial", label: "Mon activité" });
